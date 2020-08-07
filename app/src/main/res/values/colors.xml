@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/bg</color>
+    <color name="colorPrimaryDark">@color/bg</color>
+    <color name="colorAccent">#FF9E37</color>
+
+    <color name="bg">#FFFFFF</color>
+    <color name="buttonCLearNormal">#69FF5E</color>
+    <color name="buttonClearPressed">#3D9836</color>
+    <color name="buttonCalcNormal">#4257CC</color>
+    <color name="buttonCalcPressed">#212D6E</color>
+    <color name="stroke">#777777</color>
+    <color name="hintMain">#DFDFDF</color>
+    <color name="error">@android:color/holo_red_dark</color>
+</resources>
