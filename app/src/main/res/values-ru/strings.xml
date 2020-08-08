@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Cross Product</string>
-    <string name="calculate">расчитать</string>
+    <string name="calculate">рассчитать</string>
     <string name="copy">скопировать</string>
     <string name="clear_all">стереть все</string>
     <string name="back">назад</string>
