@@ -4,4 +4,4 @@
 - You can download this App in Play Store. Please rate it with 5 stars
 if it helps you do Maths or Phisycs.
 
-![main look](https://github.com/S3N1CH/Cross-Product-Kotlin/blob/master/screenshots/screenshot_1.png)
+![main look](https://github.com/S3N1CH/Cross-Product-Kotlin/blob/master/assets/screenshots/0.2.0-preview.png)
