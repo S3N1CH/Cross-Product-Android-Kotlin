@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Produs Vectorial</string>
+    <string name="calculate">calculeaza</string>
+    <string name="copy">copiaza</string>
+    <string name="clear_all">sterge tot</string>
+    <string name="back">inapoi</string>
+    <string name="back_again_to_exit">Repetati pentru iesire</string>
+    <string name="answer">Raspuns</string>
+    <string name="ux_component">Componenta Ux</string>
+    <string name="uy_component">Componenta Uy</string>
+    <string name="uz_component">Componenta Uz</string>
+    <string name="solution">Solutie:</string>
+    <string name="expression">Expresie:</string>
+</resources>

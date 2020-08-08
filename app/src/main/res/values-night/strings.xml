@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Cross Product</string>
+    <string name="calculate">calculate</string>
+    <string name="copy">copy</string>
+    <string name="clear_all">clear all</string>
+    <string name="back">back</string>
+    <string name="a11">a11</string>
+    <string name="a22">a22</string>
+    <string name="a21">a21</string>
+    <string name="a12">a12</string>
+    <string name="a13">a13</string>
+    <string name="a23">a23</string>
+    <string name="a31">a31</string>
+    <string name="a32">a32</string>
+    <string name="a33">a33</string>
     <string name="back_again_to_exit">Press/Swipe back again to exit</string>
+    <string name="answer">Answer</string>
+    <string name="ux">Ux:</string>
+    <string name="ux_component">Ux component</string>
+    <string name="uy">Uy:</string>
     <string name="uy_component">Uy component</string>
     <string name="uz">Uz:</string>
+    <string name="uz_component">Uz component</string>
+    <string name="solution">Solution:</string>
+    <string name="expression">Expression</string>
 </resources>
