@@ -152,13 +152,14 @@ class MainActivity : AppCompatActivity() {
                 ${getString(R.string.solution)}
                 ${uNExpressionEditText.text} ${uNAnswerEditText.text}.
             """.trimIndent()
-        } else
+        } else {
             """
                 ${getString(R.string.solution)}
                 ${getString(R.string.ux)} (${uXResultEditText.text});
                 ${getString(R.string.uy)} (${uYResultEditText.text});
                 ${getString(R.string.uz)} (${uZResultEditText.text}).
             """.trimIndent()
+        }
     }
 
     private fun hideResultWindow() {
