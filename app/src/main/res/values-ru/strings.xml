@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Векторный Калькулятор</string>
+    <string name="app_name">Cross Product</string>
     <string name="calculate">расчитать</string>
     <string name="copy">копировать</string>
     <string name="clear_all">стереть все</string>
     <string name="back">назад</string>
     <string name="back_again_to_exit">Повторите для выхода</string>
     <string name="answer">Ответ</string>
-    <string name="ux_component">координата x</string>
-    <string name="uy_component">координата y</string>
-    <string name="uz_component">координата z</string>
+    <string name="ux_component">координата Ux</string>
+    <string name="uy_component">координата Uy</string>
+    <string name="uz_component">координата Uz</string>
     <string name="solution">Решение:</string>
     <string name="expression">Выражение</string>
 </resources>
