@@ -23,4 +23,8 @@
     <string name="uz_component">Uz component</string>
     <string name="solution">Solution:</string>
     <string name="expression">Expression</string>
+    <string name="switch_theme">Switch theme</string>
+    <string name="i" translatable="false">i</string>
+    <string name="j" translatable="false">j</string>
+    <string name="k" translatable="false">k</string>
 </resources>

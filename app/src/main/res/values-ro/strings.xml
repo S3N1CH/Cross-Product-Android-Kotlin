@@ -12,4 +12,8 @@
     <string name="uz_component">Componenta Uz</string>
     <string name="solution">Solutie:</string>
     <string name="expression">Expresie:</string>
+    <string name="switch_theme">Switch theme</string>
+    <string name="i">i</string>
+    <string name="j">j</string>
+    <string name="k">k</string>
 </resources>
