@@ -1,6 +1,9 @@
 package com.s3n1ch.crossproduct
 
 import android.animation.ValueAnimator
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
@@ -18,6 +21,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.textfield.TextInputEditText
 import com.viniciusmo.keyboardvisibility.keyboard
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_numeral_result_window.*
+import kotlinx.android.synthetic.main.fragment_vector_result_window.*
 
 class MainActivity : AppCompatActivity() {
     private var doubleBackToExitPressedOnce = false
@@ -107,15 +112,23 @@ class MainActivity : AppCompatActivity() {
     ) {
         calculateButton.setOnClickListener {
             try {
-                keyboard {
-                    if (isKeyboardOpen()) {
-                        a33.onEditorAction(EditorInfo.IME_ACTION_DONE)
-                        a33.requestFocus()
+                if (calculateButton.text == getString(R.string.calculate)) {
+                    keyboard {
+                        if (isKeyboardOpen()) {
+                            a33.onEditorAction(EditorInfo.IME_ACTION_DONE)
+                            a33.requestFocus()
+                        }
                     }
+                    CalculatorAlgorithm(this, uResultEditTexts, textInputEditTexts)
+                } else {
+                    val toCopy = getCurrentResultWindowText(CalculatorAlgorithm.currentResultWindow)
+                    val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    val clip: ClipData = ClipData.newPlainText("LABELTEST", toCopy)
+                    clipboard.setPrimaryClip(clip)
+                    showToast("Copied")
                 }
-                CalculatorAlgorithm(this, uResultEditTexts, textInputEditTexts)
             } catch (e: Exception) {
-                Log.w("WARNING", e)
+                Log.w("EXCEPTION_OCCURED", e.toString())
             }
         }
         clearAllButton.setOnClickListener {
@@ -126,10 +139,26 @@ class MainActivity : AppCompatActivity() {
                 a11.requestFocus()
                 hideResultWindow()
             } catch (e: Exception) {
+                Log.w("EXCEPTION_OCCURED", e.toString())
             }
         }
         // Switch day/night mode
         swtch_theme_btn.setOnClickListener { switchAppTheme() }
+    }
+
+    private fun getCurrentResultWindowText(currentResultWindow: Int): String {
+        return if (currentResultWindow == 1) {
+            """
+                ${getString(R.string.solution)}
+                ${uNExpressionEditText.text} ${uNAnswerEditText.text}.
+            """.trimIndent()
+        } else
+            """
+                ${getString(R.string.solution)}
+                ${getString(R.string.ux)} (${uXResultEditText.text});
+                ${getString(R.string.uy)} (${uYResultEditText.text});
+                ${getString(R.string.uz)} (${uZResultEditText.text}).
+            """.trimIndent()
     }
 
     private fun hideResultWindow() {
@@ -177,7 +206,8 @@ class MainActivity : AppCompatActivity() {
         resultEditTextsHashMap["uXResultEditText"] = findViewById(R.id.uXResultEditText)
         resultEditTextsHashMap["uYResultEditText"] = findViewById(R.id.uYResultEditText)
         resultEditTextsHashMap["uZResultEditText"] = findViewById(R.id.uZResultEditText)
-        resultEditTextsHashMap["uNResultEditText"] = findViewById(R.id.uNResultEditText)
+        resultEditTextsHashMap["uNExpressionEditText"] = findViewById(R.id.uNExpressionEditText)
+        resultEditTextsHashMap["uNAnswerEditText"] = findViewById(R.id.uNAnswerEditText)
         return resultEditTextsHashMap
     }
 
@@ -219,6 +249,10 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
     }
 
     private fun showToast(message: String) {
