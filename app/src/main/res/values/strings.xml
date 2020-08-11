@@ -15,16 +15,15 @@
     <string name="a33" translatable="false">a33</string>
     <string name="back_again_to_exit">Press/Swipe back again to exit</string>
     <string name="answer">Answer</string>
-    <string name="ux" translatable="false">Ux:</string>
-    <string name="ux_component">Ux component</string>
-    <string name="uy" translatable="false">Uy:</string>
-    <string name="uy_component">Uy component</string>
-    <string name="uz" translatable="false">Uz:</string>
-    <string name="uz_component">Uz component</string>
     <string name="solution">Solution:</string>
-    <string name="expression">Expression</string>
-    <string name="switch_theme">Switch theme</string>
-    <string name="i" translatable="false">i</string>
-    <string name="j" translatable="false">j</string>
-    <string name="k" translatable="false">k</string>
+    <string name="ux" translatable="false">Ux:</string>
+    <string name="uy" translatable="false">Uy:</string>
+    <string name="uz" translatable="false">Uz:</string>
+    <string name="uy_component">Uy component</string>
+    <string name="ux_component">Ux component</string>
+    <string name="uz_component">Uz component</string>
+    <string name="data_is_correct">Check if data is introduced correctly</string>
+    <string name="error">Error!</string>
+    <string name="copied">Copied</string>
+    <string name="initial_data">Initial data:</string>
 </resources>

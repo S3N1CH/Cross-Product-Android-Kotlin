@@ -5,27 +5,27 @@
     <string name="copy">copy</string>
     <string name="clear_all">clear all</string>
     <string name="back">back</string>
-    <string name="a11">a11</string>
-    <string name="a22">a22</string>
-    <string name="a21">a21</string>
-    <string name="a12">a12</string>
-    <string name="a13">a13</string>
-    <string name="a23">a23</string>
-    <string name="a31">a31</string>
-    <string name="a32">a32</string>
-    <string name="a33">a33</string>
+    <string name="a11" translatable="false">a11</string>
+    <string name="a22" translatable="false">a22</string>
+    <string name="a21" translatable="false">a21</string>
+    <string name="a12" translatable="false">a12</string>
+    <string name="a13" translatable="false">a13</string>
+    <string name="a23" translatable="false">a23</string>
+    <string name="a31" translatable="false">a31</string>
+    <string name="a32" translatable="false">a32</string>
+    <string name="a33" translatable="false">a33</string>
     <string name="back_again_to_exit">Press/Swipe back again to exit</string>
     <string name="answer">Answer</string>
-    <string name="ux">Ux:</string>
+    <string name="ux" translatable="false">Ux:</string>
     <string name="ux_component">Ux component</string>
-    <string name="uy">Uy:</string>
+    <string name="uy" translatable="false">Uy:</string>
     <string name="uy_component">Uy component</string>
     <string name="uz">Uz:</string>
     <string name="uz_component">Uz component</string>
     <string name="solution">Solution:</string>
     <string name="expression">Expression</string>
     <string name="switch_theme">Switch theme</string>
-    <string name="i">i</string>
-    <string name="j">j</string>
-    <string name="k">k</string>
+    <string name="i" translatable="false">i</string>
+    <string name="j" translatable="false">j</string>
+    <string name="k" translatable="false">k</string>
 </resources>
