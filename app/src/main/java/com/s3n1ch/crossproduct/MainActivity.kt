@@ -1,6 +1,7 @@
 package com.s3n1ch.crossproduct
 
 import android.animation.ValueAnimator
+import android.animation.ValueAnimator.ofFloat
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -12,7 +13,6 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.animation.AnticipateOvershootInterpolator
 import android.view.animation.LinearInterpolator
-import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.RelativeLayout
 import android.widget.Toast
@@ -39,47 +39,40 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        Log.i("MyLOG", "onStart")
+        Log.i("LIFECYCLE_EVENT", "onStart")
     }
 
     override fun onResume() {
         super.onResume()
         startAnim(calculateButton, clearAllButton, resources.displayMetrics.widthPixels)
-        Log.i("MyLOG", "onResume")
+        Log.i("LIFECYCLE_EVENT", "onResume")
     }
 
     override fun onPause() {
         super.onPause()
-        Log.i("MyLOG", "onPause")
         hideResultWindow()
+        Log.i("LIFECYCLE_EVENT", "onPause")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.i("MyLOG", "onStop")
+        Log.i("LIFECYCLE_EVENT", "onStop")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.i("MyLOG", "onDestroy")
+        Log.i("LIFECYCLE_EVENT", "onDestroy")
     }
 
-    private fun startAnim(
-        leftButton: Button, rightButton: Button,
-        displayWidth: Int, start: Boolean = true
-    ) {
-        val valueAnimator: ValueAnimator = if (start) {  // up
-            ValueAnimator.ofFloat(-displayWidth.toFloat(), 0f)
-        } else { // down
-            ValueAnimator.ofFloat(0f, -displayWidth.toFloat())
-        }
-        valueAnimator.addUpdateListener { it ->
+    private fun startAnim(leftButton: Button, rightButton: Button, displayWidth: Int) {
+        val valueAnimator: ValueAnimator = ofFloat(-displayWidth.toFloat(), 0f)
+        valueAnimator.addUpdateListener {
             val value: Float = it.animatedValue as Float
             rightButton.translationX = value
             leftButton.translationX = -value
         }
         valueAnimator.interpolator = AnticipateOvershootInterpolator()
-        valueAnimator.duration = 1600
+        valueAnimator.duration = 1200
         valueAnimator.start()
     }
 
@@ -92,17 +85,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun mainBlockAnim(mainBlock: RelativeLayout, hide: Boolean = false) {
-        val valueAnimator: ValueAnimator = if (hide) {  // up
-            ValueAnimator.ofFloat(-310f, 0f)
-        } else { // down
-            ValueAnimator.ofFloat(0f, -310f)
-        }
-        valueAnimator.addUpdateListener { it ->
+        val valueAnimator: ValueAnimator = if (hide) ofFloat(-310f, 0f) else ofFloat(0f, -310f)
+        valueAnimator.addUpdateListener {
             val value: Float = it.animatedValue as Float
             mainBlock.translationY = value
         }
         valueAnimator.interpolator = LinearInterpolator()
-        valueAnimator.duration = 200
+        valueAnimator.duration = 100
         valueAnimator.start()
     }
 
@@ -112,65 +101,69 @@ class MainActivity : AppCompatActivity() {
     ) {
         calculateButton.setOnClickListener {
             try {
-                if (calculateButton.text == getString(R.string.calculate)) {
-                    keyboard {
-                        if (isKeyboardOpen()) {
-                            a33.onEditorAction(EditorInfo.IME_ACTION_DONE)
-                            a33.requestFocus()
-                        }
-                    }
+                if (CalculatorAlgorithm.isResultWindowOpened) copyData() else {
                     CalculatorAlgorithm(this, uResultEditTexts, textInputEditTexts)
-                } else {
-                    val toCopy = getCurrentResultWindowText(CalculatorAlgorithm.currentResultWindow)
-                    val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    val clip: ClipData = ClipData.newPlainText("LABELTEST", toCopy)
-                    clipboard.setPrimaryClip(clip)
-                    showToast("Copied")
                 }
             } catch (e: Exception) {
-                Log.w("EXCEPTION_OCCURED", e.toString())
+                Log.w("EXCEPTION_CALCULATE", e.toString())
             }
         }
         clearAllButton.setOnClickListener {
             try {
-                if (clearAllButton.text == getString(R.string.clear_all)) {
-                    clearAll()
-                }
+                if (CalculatorAlgorithm.isResultWindowOpened) hideResultWindow() else clearAll()
                 a11.requestFocus()
-                hideResultWindow()
             } catch (e: Exception) {
-                Log.w("EXCEPTION_OCCURED", e.toString())
+                Log.w("EXCEPTION_CLEAR_ALL", e.toString())
             }
         }
-        // Switch day/night mode
-        swtch_theme_btn.setOnClickListener { switchAppTheme() }
+        swtch_theme_btn.setOnClickListener { switchAppTheme() }  // Switch day/night mode
+    }
+
+    private fun copyData() {
+        val toCopy = getCurrentResultWindowText(CalculatorAlgorithm.currentResultWindow)
+        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip: ClipData = ClipData.newPlainText("", toCopy)
+        clipboard.setPrimaryClip(clip)
+        showToast(getString(R.string.copied))
     }
 
     private fun getCurrentResultWindowText(currentResultWindow: Int): String {
         return if (currentResultWindow == 1) {
             """
-                ${getString(R.string.solution)}
-                ${uNExpressionEditText.text} ${uNAnswerEditText.text}.
+            ${getString(R.string.initial_data)}
+            | ${a11.text} , ${a12.text} , ${a13.text} |;
+            | ${a21.text} , ${a22.text} , ${a23.text} |;
+            | ${a31.text} , ${a32.text} , ${a33.text} |.
+            
+            ${getString(R.string.solution)}
+            ${uNExpressionEditText.text} ${uNAnswerEditText.text}.
             """.trimIndent()
         } else {
             """
-                ${getString(R.string.solution)}
-                ${getString(R.string.ux)} (${uXResultEditText.text});
-                ${getString(R.string.uy)} (${uYResultEditText.text});
-                ${getString(R.string.uz)} (${uZResultEditText.text}).
+            ${getString(R.string.initial_data)}
+            | ${a11.text} , ${a12.text} , ${a13.text} |;
+            | ${a21.text} , ${a22.text} , ${a23.text} |;
+            | ${a31.text} , ${a32.text} , ${a33.text} |.
+            
+            ${getString(R.string.solution)}
+            ${getString(R.string.ux)} (${uXResultEditText.text});
+            ${getString(R.string.uy)} (${uYResultEditText.text});
+            ${getString(R.string.uz)} (${uZResultEditText.text}).
             """.trimIndent()
         }
     }
 
     private fun hideResultWindow() {
-        val fragTransaction = supportFragmentManager.beginTransaction()
-        fragTransaction.setCustomAnimations(R.anim.show_result, R.anim.hide_result)
-        fragTransaction.hide(fragmentVectorResultWindow)
-        fragTransaction.hide(fragmentNumeralResultWindow)
-        clearAllButton.text = getString(R.string.clear_all)
-        calculateButton.text = getString(R.string.calculate)
-        fragTransaction.addToBackStack(null)
-        fragTransaction.commit()
+        if (CalculatorAlgorithm.isResultWindowOpened) {
+            val fragment = if (CalculatorAlgorithm.currentResultWindow == 0) fragmentVectorResultWindow else fragmentNumeralResultWindow
+            val fragTransaction = supportFragmentManager.beginTransaction()
+            fragTransaction.setCustomAnimations(R.anim.show_result, R.anim.hide_result)
+            fragTransaction.hide(fragment)
+            fragTransaction.commit()
+            clearAllButton.text = getString(R.string.clear_all)
+            calculateButton.text = getString(R.string.calculate)
+            CalculatorAlgorithm.isResultWindowOpened = false
+        }
     }
 
     private fun hardHideResultWindow() {
@@ -178,14 +171,12 @@ class MainActivity : AppCompatActivity() {
         fragTransaction.hide(fragmentVectorResultWindow)
         fragTransaction.hide(fragmentNumeralResultWindow)
         fragTransaction.commit()
+        CalculatorAlgorithm.isResultWindowOpened = false
     }
 
     private fun clearAll() {
         for (i in (1..3)) {
-            for (j in (1..3)) {
-                val cell = "a$i$j"
-                val input = getTextInputEditText(cell)
-                input.text = null
+            for (j in (1..3)) { getTextInputEditText("a$i$j").text = null
             }
         }
     }
@@ -229,6 +220,7 @@ class MainActivity : AppCompatActivity() {
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (event.action == KeyEvent.ACTION_DOWN) {
             if (keyCode == KeyEvent.KEYCODE_BACK) {
+                hideResultWindow()
                 showToastToExit()
                 return true
             }
@@ -244,16 +236,9 @@ class MainActivity : AppCompatActivity() {
             else -> {
                 doubleBackToExitPressedOnce = true
                 showToast(getString(R.string.back_again_to_exit))
-                Handler(Looper.myLooper()!!).postDelayed(
-                    { doubleBackToExitPressedOnce = false },
-                    2000
-                )
+                Handler(Looper.myLooper()!!).postDelayed({ doubleBackToExitPressedOnce = false },2000)
             }
         }
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
     }
 
     private fun showToast(message: String) {
@@ -263,10 +248,7 @@ class MainActivity : AppCompatActivity() {
     private fun isNightModeOn(): Boolean {
         val appSharedPreferences: SharedPreferences =
             getSharedPreferences("AppSharedPreferences", 0)
-        return appSharedPreferences.getBoolean(
-            "NightMode",
-            false
-        )  // Check night/day mode in internal storage
+        return appSharedPreferences.getBoolean("NightMode", false)  // Check night/day mode in internal storage
     }
 
     private fun setAppTheme() {

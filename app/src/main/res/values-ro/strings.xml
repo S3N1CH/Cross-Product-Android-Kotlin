@@ -7,13 +7,14 @@
     <string name="back">inapoi</string>
     <string name="back_again_to_exit">Repetati pentru iesire</string>
     <string name="answer">Raspuns</string>
-    <string name="ux_component">Componenta Ux</string>
-    <string name="uy_component">Componenta Uy</string>
-    <string name="uz_component">Componenta Uz</string>
+    <string name="ux_component">componenta Ux</string>
+    <string name="uy_component">componenta Uy</string>
+    <string name="uz_component">componenta Uz</string>
     <string name="solution">Solutie:</string>
-    <string name="expression">Expresie:</string>
+    <string name="expression">Expresie</string>
     <string name="switch_theme">Switch theme</string>
-    <string name="i">i</string>
-    <string name="j">j</string>
-    <string name="k">k</string>
+    <string name="error">Eroare!</string>
+    <string name="data_is_correct">Verificati daca datele introduse sunt corecte</string>
+    <string name="copied">Copiat</string>
+    <string name="initial_data">Datele initiale:</string>
 </resources>

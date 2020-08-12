@@ -13,7 +13,8 @@
     <string name="solution">Решение:</string>
     <string name="expression">Выражение</string>
     <string name="switch_theme">Switch theme</string>
-    <string name="i">i</string>
-    <string name="j">j</string>
-    <string name="k">k</string>
+    <string name="data_is_correct">Проверьте правильность введенных данных</string>
+    <string name="error">Ошибка!</string>
+    <string name="copied">Скопировано</string>
+    <string name="initial_data">Условие:</string>
 </resources>
