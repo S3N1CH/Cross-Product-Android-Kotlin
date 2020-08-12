@@ -176,10 +176,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun clearAll() {
         for (i in (1..3)) {
-            for (j in (1..3)) {
-                val cell = "a$i$j"
-                val input = getTextInputEditText(cell)
-                input.text = null
+            for (j in (1..3)) { getTextInputEditText("a$i$j").text = null
             }
         }
     }
