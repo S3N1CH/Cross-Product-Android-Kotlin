@@ -10,19 +10,14 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.KeyEvent
 import android.view.animation.AnticipateOvershootInterpolator
 import android.view.animation.LinearInterpolator
-import android.widget.Button
 import android.widget.RelativeLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.textfield.TextInputEditText
 import com.viniciusmo.keyboardvisibility.keyboard
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_numeral_result_window.*
-import kotlinx.android.synthetic.main.fragment_vector_result_window.*
 
 class MainActivity : AppCompatActivity() {
     private var doubleBackToExitPressedOnce = false
@@ -31,10 +26,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setAppTheme()
-        startAnim(calculateButton, clearAllButton, resources.displayMetrics.widthPixels)
+        startButtonsAnim()
         hardHideResultWindow()
         setMainBlockResponse()
-        setButtonsFunctionality(createCoordInputsHashMap(), createResultEditTextsHashMap())
+        setButtonsFunctionality()
     }
 
     override fun onStart() {
@@ -44,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        startAnim(calculateButton, clearAllButton, resources.displayMetrics.widthPixels)
+        startButtonsAnim()
         Log.i("LIFECYCLE_EVENT", "onResume")
     }
 
@@ -64,12 +59,12 @@ class MainActivity : AppCompatActivity() {
         Log.i("LIFECYCLE_EVENT", "onDestroy")
     }
 
-    private fun startAnim(leftButton: Button, rightButton: Button, displayWidth: Int) {
-        val valueAnimator: ValueAnimator = ofFloat(-displayWidth.toFloat(), 0f)
+    private fun startButtonsAnim() {
+        val valueAnimator: ValueAnimator = ofFloat(resources.displayMetrics.widthPixels.toFloat(), 0f)
         valueAnimator.addUpdateListener {
             val value: Float = it.animatedValue as Float
-            rightButton.translationX = value
-            leftButton.translationX = -value
+            calculateButton.translationX = value
+            clearAllButton.translationX = -value
         }
         valueAnimator.interpolator = AnticipateOvershootInterpolator()
         valueAnimator.duration = 1200
@@ -95,10 +90,10 @@ class MainActivity : AppCompatActivity() {
         valueAnimator.start()
     }
 
-    private fun setButtonsFunctionality(
-        textInputEditTexts: HashMap<String, TextInputEditText>,
-        uResultEditTexts: HashMap<String, TextInputEditText>
-    ) {
+    private fun setButtonsFunctionality() {
+        val textInputEditTexts = createCoordInputsHashMap()
+        val uResultEditTexts = createResultEditTextsHashMap()
+
         calculateButton.setOnClickListener {
             try {
                 if (CalculatorAlgorithm.isResultWindowOpened) copyData() else {
@@ -120,37 +115,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun copyData() {
-        val toCopy = getCurrentResultWindowText(CalculatorAlgorithm.currentResultWindow)
+        val toCopy = CalculatorAlgorithm.getCurrentResultWindowText(this)
         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip: ClipData = ClipData.newPlainText("", toCopy)
         clipboard.setPrimaryClip(clip)
-        showToast(getString(R.string.copied))
-    }
-
-    private fun getCurrentResultWindowText(currentResultWindow: Int): String {
-        return if (currentResultWindow == 1) {
-            """
-            ${getString(R.string.initial_data)}
-            | ${a11.text} , ${a12.text} , ${a13.text} |;
-            | ${a21.text} , ${a22.text} , ${a23.text} |;
-            | ${a31.text} , ${a32.text} , ${a33.text} |.
-            
-            ${getString(R.string.solution)}
-            ${uNExpressionEditText.text} ${uNAnswerEditText.text}.
-            """.trimIndent()
-        } else {
-            """
-            ${getString(R.string.initial_data)}
-            | ${a11.text} , ${a12.text} , ${a13.text} |;
-            | ${a21.text} , ${a22.text} , ${a23.text} |;
-            | ${a31.text} , ${a32.text} , ${a33.text} |.
-            
-            ${getString(R.string.solution)}
-            ${getString(R.string.ux)} (${uXResultEditText.text});
-            ${getString(R.string.uy)} (${uYResultEditText.text});
-            ${getString(R.string.uz)} (${uZResultEditText.text}).
-            """.trimIndent()
-        }
+        showToast(this, getString(R.string.copied))
     }
 
     private fun hideResultWindow() {
@@ -175,8 +144,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun clearAll() {
-        for (i in (1..3)) {
-            for (j in (1..3)) { getTextInputEditText("a$i$j").text = null
+        for (i in 1..3) {
+            for (j in 1..3) {
+                getTextInputEditText(this, "a$i$j").text = null
             }
         }
     }
@@ -186,7 +156,7 @@ class MainActivity : AppCompatActivity() {
         for (i in (1..3)) {
             for (j in (1..3)) {
                 val cell = "a$i$j"
-                val textInput = getTextInputEditText(cell)
+                val textInput = getTextInputEditText(this, "a$i$j")
                 textInputs[cell] = textInput
             }
         }
@@ -203,46 +173,16 @@ class MainActivity : AppCompatActivity() {
         return resultEditTextsHashMap
     }
 
-    private fun getTextInputEditText(objId: String): TextInputEditText {
-        return when (objId) {
-            "a11" -> findViewById(R.id.a11)
-            "a12" -> findViewById(R.id.a12)
-            "a13" -> findViewById(R.id.a13)
-            "a21" -> findViewById(R.id.a21)
-            "a22" -> findViewById(R.id.a22)
-            "a23" -> findViewById(R.id.a23)
-            "a31" -> findViewById(R.id.a31)
-            "a32" -> findViewById(R.id.a32)
-            else -> findViewById(R.id.a33)
-        }
-    }
-
-    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        if (event.action == KeyEvent.ACTION_DOWN) {
-            if (keyCode == KeyEvent.KEYCODE_BACK) {
-                hideResultWindow()
-                showToastToExit()
-                return true
-            }
-        }
-        return super.onKeyDown(keyCode, event)
-    }
-
-    private fun showToastToExit() {
-        when {
-            doubleBackToExitPressedOnce -> {
-                onBackPressed()
-            }
-            else -> {
+    override fun onBackPressed() {
+        when (doubleBackToExitPressedOnce) {
+            false -> {
                 doubleBackToExitPressedOnce = true
-                showToast(getString(R.string.back_again_to_exit))
+                hideResultWindow()
+                showToast(this, getString(R.string.back_again_to_exit))
                 Handler(Looper.myLooper()!!).postDelayed({ doubleBackToExitPressedOnce = false },2000)
             }
+            else -> super.onBackPressed()
         }
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun isNightModeOn(): Boolean {

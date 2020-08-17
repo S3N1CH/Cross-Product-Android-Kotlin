@@ -9,6 +9,7 @@ import android.view.View
 fun Activity.getRootView(): View {
     return findViewById<View>(android.R.id.content)
 }
+
 fun Context.convertDpToPx(dp: Float): Float {
     return TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_DIP,
@@ -16,6 +17,7 @@ fun Context.convertDpToPx(dp: Float): Float {
         this.resources.displayMetrics
     )
 }
+
 fun Activity.isKeyboardOpen(): Boolean {
     val visibleBounds = Rect()
     this.getRootView().getWindowVisibleDisplayFrame(visibleBounds)
